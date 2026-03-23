@@ -2,16 +2,16 @@ import { z } from "zod";
 import { githubRequest, buildUrl } from "../common/utils.js";
 
 export const GetIssueSchema = z.object({
-  owner: z.string(),
-  repo: z.string(),
-  issue_number: z.number(),
+  owner: z.string().describe("Repository owner (username or organization)"),
+  repo: z.string().describe("Repository name"),
+  issue_number: z.number().describe("Issue number"),
 });
 
 export const IssueCommentSchema = z.object({
-  owner: z.string(),
-  repo: z.string(),
-  issue_number: z.number(),
-  body: z.string(),
+  owner: z.string().describe("Repository owner (username or organization)"),
+  repo: z.string().describe("Repository name"),
+  issue_number: z.number().describe("Issue number to comment on"),
+  body: z.string().describe("Comment body text"),
 });
 
 export const CreateIssueOptionsSchema = z.object({

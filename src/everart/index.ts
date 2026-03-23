@@ -100,11 +100,18 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "generate_image") {
     try {
-      const {
-        prompt,
-        model = "207910310772879360",
-        image_count = 1,
-      } = request.params.arguments as any;
+      const args = request.params.arguments;
+      if (!args || typeof args !== "object") {
+        throw new Error("Arguments are required");
+      }
+      const typedArgs = args as Record<string, unknown>;
+      const prompt = typedArgs["prompt"];
+      if (typeof prompt !== "string" || !prompt) {
+        throw new Error("prompt must be a non-empty string");
+      }
+      // Default matches the inputSchema default ("5000" = FLUX1.1)
+      const model = typeof typedArgs["model"] === "string" ? typedArgs["model"] : "5000";
+      const image_count = typeof typedArgs["image_count"] === "number" ? typedArgs["image_count"] : 1;
 
       // Use correct EverArt API method
       const generation = await client.v1.generations.create(

@@ -12,12 +12,23 @@ import {
   RetrieveCommandInput,
 } from "@aws-sdk/client-bedrock-agent-runtime";
 
+// Validate required environment variables at startup
+const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
+const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
+
+if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY) {
+  console.error(
+    "Error: AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables are required"
+  );
+  process.exit(1);
+}
+
 // AWS client initialization
 const bedrockClient = new BedrockAgentRuntimeClient({
   region: process.env.AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY,
   },
 });
 
@@ -125,7 +136,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
   if (name === "retrieve_from_aws_kb") {
-    const { query, knowledgeBaseId, n = 3 } = args as Record<string, any>;
+    if (!args || typeof args !== "object") {
+      return {
+        content: [{ type: "text", text: "Error: arguments are required" }],
+        isError: true,
+      };
+    }
+    const typedArgs = args as Record<string, unknown>;
+    const query = typedArgs["query"];
+    const knowledgeBaseId = typedArgs["knowledgeBaseId"];
+    const n = typeof typedArgs["n"] === "number" ? typedArgs["n"] : 3;
+    if (typeof query !== "string" || typeof knowledgeBaseId !== "string") {
+      return {
+        content: [{ type: "text", text: "Error: query and knowledgeBaseId must be strings" }],
+        isError: true,
+      };
+    }
     try {
       const result = await retrieveContext(query, knowledgeBaseId, n);
       if (result.isRagWorking) {

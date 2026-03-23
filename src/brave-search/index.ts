@@ -93,15 +93,26 @@ const RATE_LIMIT = {
 let requestCount = {
   second: 0,
   month: 0,
-  lastReset: Date.now()
+  lastSecondReset: Date.now(),
+  lastMonthReset: Date.now()
 };
 
 function checkRateLimit() {
   const now = Date.now();
-  if (now - requestCount.lastReset > 1000) {
+
+  // Reset per-second counter
+  if (now - requestCount.lastSecondReset > 1000) {
     requestCount.second = 0;
-    requestCount.lastReset = now;
+    requestCount.lastSecondReset = now;
   }
+
+  // Reset per-month counter (approximately 30 days)
+  const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+  if (now - requestCount.lastMonthReset > THIRTY_DAYS_MS) {
+    requestCount.month = 0;
+    requestCount.lastMonthReset = now;
+  }
+
   if (requestCount.second >= RATE_LIMIT.perSecond ||
     requestCount.month >= RATE_LIMIT.perMonth) {
     throw new Error('Rate limit exceeded');

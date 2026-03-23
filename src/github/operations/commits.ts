@@ -2,11 +2,11 @@ import { z } from "zod";
 import { githubRequest, buildUrl } from "../common/utils.js";
 
 export const ListCommitsSchema = z.object({
-  owner: z.string(),
-  repo: z.string(),
-  sha: z.string().optional(),
-  page: z.number().optional(),
-  perPage: z.number().optional()
+  owner: z.string().describe("Repository owner (username or organization)"),
+  repo: z.string().describe("Repository name"),
+  sha: z.string().optional().describe("SHA or branch to list commits from"),
+  page: z.number().optional().describe("Page number for pagination"),
+  perPage: z.number().optional().describe("Number of results per page (max 100)")
 });
 
 export async function listCommits(

@@ -58,30 +58,34 @@ export function isGitHubError(error: unknown): error is GitHubError {
   return error instanceof GitHubError;
 }
 
-export function createGitHubError(status: number, response: any): GitHubError {
+export function createGitHubError(status: number, response: unknown): GitHubError {
+  const body = response as Record<string, unknown> | null | undefined;
+  const message = typeof body?.message === "string" ? body.message : undefined;
+  const resetAt = typeof body?.reset_at === "string" ? body.reset_at : undefined;
+
   switch (status) {
     case 401:
-      return new GitHubAuthenticationError(response?.message);
+      return new GitHubAuthenticationError(message);
     case 403:
-      return new GitHubPermissionError(response?.message);
+      return new GitHubPermissionError(message);
     case 404:
-      return new GitHubResourceNotFoundError(response?.message || "Resource");
+      return new GitHubResourceNotFoundError(message || "Resource");
     case 409:
-      return new GitHubConflictError(response?.message || "Conflict occurred");
+      return new GitHubConflictError(message || "Conflict occurred");
     case 422:
       return new GitHubValidationError(
-        response?.message || "Validation failed",
+        message || "Validation failed",
         status,
         response
       );
     case 429:
       return new GitHubRateLimitError(
-        response?.message,
-        new Date(response?.reset_at || Date.now() + 60000)
+        message,
+        new Date(resetAt || Date.now() + 60000)
       );
     default:
       return new GitHubError(
-        response?.message || "GitHub API error",
+        message || "GitHub API error",
         status,
         response
       );

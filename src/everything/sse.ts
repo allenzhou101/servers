@@ -9,7 +9,7 @@ const { server, cleanup } = createServer();
 let transport: SSEServerTransport;
 
 app.get("/sse", async (req, res) => {
-  console.log("Received connection");
+  console.error("Received connection");
   transport = new SSEServerTransport("/message", res);
   await server.connect(transport);
 
@@ -21,12 +21,12 @@ app.get("/sse", async (req, res) => {
 });
 
 app.post("/message", async (req, res) => {
-  console.log("Received message");
+  console.error("Received message");
 
   await transport.handlePostMessage(req, res);
 });
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.error(`Server is running on port ${PORT}`);
 });

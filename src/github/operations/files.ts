@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { githubRequest } from "../common/utils.js";
+import { isGitHubError } from "../common/errors.js";
 import {
   GitHubContentSchema,
   GitHubAuthorSchema,
@@ -110,7 +111,12 @@ export async function createOrUpdateFile(
         currentSha = existingFile.sha;
       }
     } catch (error) {
-      console.error("Note: File does not exist in branch, will create new file");
+      // Only ignore 404 (file not found) — re-throw all other errors
+      if (isGitHubError(error) && error.status === 404) {
+        // File does not exist yet; will be created
+      } else {
+        throw error;
+      }
     }
   }
 

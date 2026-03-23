@@ -110,7 +110,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "query") {
-    const sql = request.params.arguments?.sql as string;
+    const sql = request.params.arguments?.sql;
+    if (typeof sql !== "string" || !sql.trim()) {
+      throw new Error("sql argument must be a non-empty string");
+    }
 
     const client = await pool.connect();
     try {
@@ -120,8 +123,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         content: [{ type: "text", text: JSON.stringify(result.rows, null, 2) }],
         isError: false,
       };
-    } catch (error) {
-      throw error;
     } finally {
       client
         .query("ROLLBACK")

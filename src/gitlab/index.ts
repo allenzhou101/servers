@@ -242,7 +242,14 @@ async function createOrUpdateFile(
     await getFileContents(projectId, filePath, branch);
     method = "PUT";
   } catch (error) {
-    // File doesn't exist, use POST
+    // Only treat 404 (file not found) as "use POST" — re-throw all other errors
+    const status =
+      error instanceof Error && "status" in error
+        ? (error as { status: number }).status
+        : undefined;
+    if (status !== 404) {
+      throw error;
+    }
   }
 
   const response = await fetch(url, {

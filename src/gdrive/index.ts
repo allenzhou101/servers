@@ -30,7 +30,11 @@ const server = new Server(
 
 server.setRequestHandler(ListResourcesRequestSchema, async (request) => {
   const pageSize = 10;
-  const params: any = {
+  const params: {
+    pageSize: number;
+    fields: string;
+    pageToken?: string;
+  } = {
     pageSize,
     fields: "nextPageToken, files(id, name, mimeType)",
   };
@@ -40,7 +44,7 @@ server.setRequestHandler(ListResourcesRequestSchema, async (request) => {
   }
 
   const res = await drive.files.list(params);
-  const files = res.data.files!;
+  const files = res.data.files ?? [];
 
   return {
     resources: files.map((file) => ({
@@ -149,7 +153,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "search") {
-    const userQuery = request.params.arguments?.query as string;
+    const userQuery = request.params.arguments?.query;
+    if (typeof userQuery !== "string" || !userQuery.trim()) {
+      throw new Error("query argument must be a non-empty string");
+    }
     const escapedQuery = userQuery.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
     const formattedQuery = `fullText contains '${escapedQuery}'`;
 
@@ -160,7 +167,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     });
 
     const fileList = res.data.files
-      ?.map((file: any) => `${file.name} (${file.mimeType})`)
+      ?.map((file) => `${file.name} (${file.mimeType})`)
       .join("\n");
     return {
       content: [
@@ -181,7 +188,7 @@ const credentialsPath = process.env.GDRIVE_CREDENTIALS_PATH || path.join(
 );
 
 async function authenticateAndSaveCredentials() {
-  console.log("Launching auth flow…");
+  console.error("Launching auth flow…");
   const auth = await authenticate({
     keyfilePath: process.env.GDRIVE_OAUTH_PATH || path.join(
       path.dirname(new URL(import.meta.url).pathname),
@@ -190,7 +197,7 @@ async function authenticateAndSaveCredentials() {
     scopes: ["https://www.googleapis.com/auth/drive.readonly"],
   });
   fs.writeFileSync(credentialsPath, JSON.stringify(auth.credentials));
-  console.log("Credentials saved. You can now run the server.");
+  console.error("Credentials saved. You can now run the server.");
 }
 
 async function loadCredentialsAndRunServer() {

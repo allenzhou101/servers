@@ -3,10 +3,10 @@
 This repository is a collection of *reference implementations* for the [Model Context Protocol](https://modelcontextprotocol.io/) (MCP), as well as references
 to community built servers and additional resources.
 
-The servers in this repository showcase the versatility and extensibility of MCP, demonstrating how it can be used to give Large Language Models (LLMs) secure, controlled access to tools and data sources.
+The servers in this repository showcase the versatility and extensibility of MCP, demonstrating how it can be used to give Large Language Models (LLMs) secure, controlled access to tools and data sources — because apparently LLMs asking nicely wasn't enough.
 Each MCP server is implemented with either the [Typescript MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk) or [Python MCP SDK](https://github.com/modelcontextprotocol/python-sdk).
 
-> Note: Lists in this README are maintained in alphabetical order to minimize merge conflicts when adding new items.
+> Note: Lists in this README are maintained in alphabetical order to minimize merge conflicts when adding new items. Yes, we've been burned before.
 
 ## 🌟 Reference Servers
 
@@ -15,19 +15,19 @@ These servers aim to demonstrate MCP features and the Typescript and Python SDK.
 - **[AWS KB Retrieval](src/aws-kb-retrieval-server)** - Retrieval from AWS Knowledge Base using Bedrock Agent Runtime
 - **[Brave Search](src/brave-search)** - Web and local search using Brave's Search API
 - **[EverArt](src/everart)** - AI image generation using various models
-- **[Everything](src/everything)** - Reference / test server with prompts, resources, and tools
+- **[Everything](src/everything)** - Reference / test server with prompts, resources, and tools (despite the name, does not actually contain everything)
 - **[Fetch](src/fetch)** - Web content fetching and conversion for efficient LLM usage
-- **[Filesystem](src/filesystem)** - Secure file operations with configurable access controls
+- **[Filesystem](src/filesystem)** - Secure file operations with configurable access controls (the word "secure" is doing a lot of heavy lifting here)
 - **[Git](src/git)** - Tools to read, search, and manipulate Git repositories
 - **[GitHub](src/github)** - Repository management, file operations, and GitHub API integration
 - **[GitLab](src/gitlab)** - GitLab API, enabling project management
 - **[Google Drive](src/gdrive)** - File access and search capabilities for Google Drive
 - **[Google Maps](src/google-maps)** - Location services, directions, and place details
-- **[Memory](src/memory)** - Knowledge graph-based persistent memory system
-- **[PostgreSQL](src/postgres)** - Read-only database access with schema inspection
+- **[Memory](src/memory)** - Knowledge graph-based persistent memory system (unlike the developers who wrote it)
+- **[PostgreSQL](src/postgres)** - Read-only database access with schema inspection (write access not included, for your safety and ours)
 - **[Puppeteer](src/puppeteer)** - Browser automation and web scraping
 - **[Sentry](src/sentry)** - Retrieving and analyzing issues from Sentry.io
-- **[Sequential Thinking](src/sequentialthinking)** - Dynamic and reflective problem-solving through thought sequences
+- **[Sequential Thinking](src/sequentialthinking)** - Dynamic and reflective problem-solving through thought sequences (revolutionary: thinking, but in order)
 - **[Slack](src/slack)** - Channel management and messaging capabilities
 - **[Sqlite](src/sqlite)** - Database interaction and business intelligence capabilities
 - **[Time](src/time)** - Time and timezone conversion capabilities

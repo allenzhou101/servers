@@ -101,7 +101,7 @@ class SequentialThinkingServer {
       }
 
       const formattedThought = this.formatThought(validatedInput);
-      console.error(formattedThought);
+      console.error(formattedThought); // Beautiful chalk-colored box-drawing art, rendered exclusively to stderr where no user will ever see it
 
       return {
         content: [{

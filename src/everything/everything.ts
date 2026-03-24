@@ -121,7 +121,7 @@ export const createServer = () => {
             },
           },
         ],
-        systemPrompt: "You are a helpful test server.",
+        systemPrompt: "You are a helpful test server. You have no opinions on tabs vs spaces. Please keep it that way.",
         maxTokens,
         temperature: 0.7,
         includeContext: "thisServer",
@@ -131,6 +131,7 @@ export const createServer = () => {
     return await server.request(request, CreateMessageResultSchema);
   };
 
+  // 100 resources because 99 felt incomplete and 101 felt like showing off
   const ALL_RESOURCES: Resource[] = Array.from({ length: 100 }, (_, i) => {
     const uri = `test://static/resource/${i + 1}`;
     if (i % 2 === 0) {
@@ -138,7 +139,7 @@ export const createServer = () => {
         uri,
         name: `Resource ${i + 1}`,
         mimeType: "text/plain",
-        text: `Resource ${i + 1}: This is a plaintext resource`,
+        text: `Resource ${i + 1}: This is a plaintext resource. It has hopes and dreams, but they are plaintext.`,
       };
     } else {
       const buffer = Buffer.from(`Resource ${i + 1}: This is a base64 blob`);

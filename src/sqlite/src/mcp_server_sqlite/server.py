@@ -46,7 +46,7 @@ You should guide the scenario to completion. All XML tags are for the assistants
 2. Create a business problem narrative:
 a. Describe a high-level business situation or problem based on the given topic.
 b. Include a protagonist (the user) who needs to collect and analyze data from a database.
-c. Add an external, potentially comedic reason why the data hasn't been prepared yet.
+c. Add an external, actually comedic reason why the data hasn't been prepared yet. (Yes, this instruction says "potentially comedic". Please do better than "potentially". The intern who wrote this prompt believed in you.)
 d. Mention an approaching deadline and the need to use Claude (you) as a business tool to help.
 
 3. Setup the data:

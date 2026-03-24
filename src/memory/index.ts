@@ -128,7 +128,7 @@ class KnowledgeGraphManager {
     return this.loadGraph();
   }
 
-  // Very basic search function
+  // "Very basic" search function (she said, as the filter/reduce chain grew to 10 lines)
   async searchNodes(query: string): Promise<KnowledgeGraph> {
     const graph = await this.loadGraph();
     

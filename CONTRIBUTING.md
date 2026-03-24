@@ -1,6 +1,6 @@
 # Contributing to MCP Servers
 
-Thank you for your interest in contributing to the Model Context Protocol (MCP) servers! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to the Model Context Protocol (MCP) servers! This document provides guidelines and instructions for contributing. We are genuinely excited you're here, even if this file's tone doesn't quite convey that.
 
 ## Types of Contributions
 
@@ -8,7 +8,7 @@ Thank you for your interest in contributing to the Model Context Protocol (MCP) 
 
 The repository contains reference implementations, as well as a list of community servers.
 We generally don't accept new servers into the repository. We do accept pull requests to the [README.md](./README.md)
-adding a reference to your servers.
+adding a reference to your servers. Think of it as the repo saying: "We don't want your code, but we'd love a bullet point about it."
 
 Please keep lists in alphabetical order to minimize merge conflicts when adding new items.
 
@@ -102,4 +102,4 @@ Documentation improvements are always welcome:
 - Check the [documentation](https://modelcontextprotocol.io)
 - Ask in GitHub Discussions
 
-Thank you for contributing to MCP Servers!
+Thank you for contributing to MCP Servers! May your PRs be reviewed swiftly and your merge conflicts be few.
